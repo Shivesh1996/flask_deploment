@@ -1,0 +1,35 @@
+# Byte-compiled / intermediate files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual Environment
+venv/
+env/
+*.env
+
+# Flask cache & logs
+instance/
+*.log
+
+# Python Package Dependencies
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Ignore database files
+*.sqlite3
+*.db
+
+# IDE / Editor files
+.vscode/
+.idea/
+*.sublime-workspace
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# Docker
+docker-compose.override.yml
+.env
