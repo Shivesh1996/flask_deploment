@@ -28,6 +28,6 @@ jobs:
           
       - name: Merge Dev into QA
         run: |
-          git checkout qa
+          git checkout QA
           git merge origin/dev --no-edit
-          git push origin qa
+          git push origin QA
