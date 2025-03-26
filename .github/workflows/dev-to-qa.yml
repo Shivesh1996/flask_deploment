@@ -1,0 +1,27 @@
+name: Auto Merge Dev to QA
+
+on:
+  push:
+    branches:
+      - dev  # Trigger when code is pushed to dev branch
+
+jobs:
+  merge_to_qa:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Needed for merging
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Merge Dev into QA
+        run: |
+          git checkout qa
+          git merge origin/dev --no-edit
+          git push origin qa
