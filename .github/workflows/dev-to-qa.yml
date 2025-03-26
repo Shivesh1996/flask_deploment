@@ -19,7 +19,13 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
+      
+      - name: Remove .env file before merging
+        run: |
+          git checkout dev
+          git rm --cached .env || echo ".env not tracked, skipping..."
+          git commit -m "Remove .env from tracking" || echo "No changes to commit"
+          
       - name: Merge Dev into QA
         run: |
           git checkout qa
