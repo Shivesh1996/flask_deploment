@@ -1,0 +1,38 @@
+name: Auto Merge QA to Prod
+
+on:
+  push:
+    branches:
+      - QA  # Trigger when code is pushed to QA branch
+
+jobs:
+  merge_to_prod:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Needed for merging
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Authenticate with GitHub
+        run: |
+          git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/Shivesh1996/flask_deploment.git
+
+      - name: Remove .env and workflow file before merging
+        run: |
+          git checkout QA
+          git rm --cached .env .github/workflows/dev-to-qa.yml || echo "Files not tracked, skipping..."
+          git commit -m "Remove .env and workflow file from tracking" || echo "No changes to commit"
+          git push origin QA
+
+      - name: Merge QA into Prod
+        run: |
+          git checkout prod
+          git merge origin/QA --no-edit
+          git push origin prod
